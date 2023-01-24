@@ -36,6 +36,7 @@ function Gest() {
 }
 // Authorize User
 function User({ session, signOut }) {
+  console.log(session);
   return (
     <main className="container mx-auto text-center py-20 flex flex-col gap-10">
       <h3 className="text-4xl font-bold">Authorize User Homepage</h3>
