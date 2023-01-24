@@ -1,7 +1,12 @@
+import Head from "next/head";
+
 export default function Register() {
-    return (
-        <div>
-            hello guy
-        </div>
-    )
+  return (
+    <div>
+      <Head>
+        <title>Register Page</title>
+      </Head>
+      hello guy
+    </div>
+  );
 }
