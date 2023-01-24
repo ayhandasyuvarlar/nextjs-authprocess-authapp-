@@ -7,7 +7,9 @@ import github from "@/public/assets/github.svg";
 import google from "@/public/assets/google.svg";
 import Image from "next/image";
 import { HiFingerPrint, HiAtSymbol } from "react-icons/hi";
+import { useState } from "react";
 const Login = () => {
+  const [show, setShow] = useState(false);
   return (
     <Layout>
       <Head>
@@ -29,19 +31,25 @@ const Login = () => {
               placeholder="Email"
               className={styles.input_text}
             />
-            <span className='icon flex items-center px-4'>
-              <HiAtSymbol size={25}/>
+            <span className="icon flex items-center px-4">
+              <HiAtSymbol size={25} />
             </span>
           </div>
           <div className={styles.input_group}>
             <input
-              type="password"
+              type={`${show ? "text" : "password"}`}
               name="password"
               placeholder="Password"
               className={styles.input_text}
             />
-              <span className='icon flex items-center px-4'>
-              <HiFingerPrint size={25}/>
+            <span
+             title={`${show ? 'hidden password' : 'visible password'}`}
+              className="icon flex items-center px-4 cursor-pointer"
+              onClick={() => {
+                setShow(!show);
+              }}
+            >
+              <HiFingerPrint size={25} />
             </span>
           </div>
           {/* login buttons */}
