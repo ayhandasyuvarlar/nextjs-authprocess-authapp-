@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
+import { getSession, useSession, signOut } from "next-auth/react";
 
 export default function Home() {
-  const [session, setSession] = useState(true);
+  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -12,7 +13,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {session ? User() : Gest()}
+      {session ? User({ session, signOut }) : Gest()}
     </>
   );
 }
@@ -34,17 +35,33 @@ function Gest() {
   );
 }
 // Authorize User
-function User() {
+function User({ session, signOut }) {
   return (
     <main className="container mx-auto text-center py-20 flex flex-col gap-10">
       <h3 className="text-4xl font-bold">Authorize User Homepage</h3>
-      <div className="details">
-        <h5>Unknown</h5>
-        <h5>Unknown</h5>
+      <div
+        className="details"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <img
+          src={session.user.image}
+          alt={"user img"}
+          width={150}
+          height={100}
+          style={{ objectFit: "cover", borderRadius: "50%" }}
+        />
+        <h5>{session.user.name}</h5>
+        <h5>{session.user.email}</h5>
       </div>
       <div className="flex justify-center gap-10">
         <div className="flex justify-center">
           <button
+            onClick={signOut}
             type="button"
             className="mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-gray-50"
           >
@@ -62,4 +79,20 @@ function User() {
       </div>
     </main>
   );
+}
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }

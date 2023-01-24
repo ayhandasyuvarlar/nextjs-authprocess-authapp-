@@ -1,7 +1,10 @@
 import "@/styles/globals.css";
 import { useEffect, useState } from "react";
-
-export default function App({ Component, pageProps }) {
+import { SessionProvider } from "next-auth/react";
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const [showChild, setShowChild] = useState(false);
   useEffect(() => {
     setShowChild(true);
@@ -12,6 +15,12 @@ export default function App({ Component, pageProps }) {
   if (typeof window === "undefined") {
     return <></>;
   } else {
-    return <Component {...pageProps} />;
+    return (
+      <>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </>
+    );
   }
 }

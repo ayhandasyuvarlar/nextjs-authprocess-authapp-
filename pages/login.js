@@ -6,10 +6,15 @@ import styles from "@/styles/Form.module.css";
 import github from "@/public/assets/github.svg";
 import google from "@/public/assets/google.svg";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import { HiFingerPrint, HiAtSymbol } from "react-icons/hi";
 import { useState } from "react";
 const Login = () => {
   const [show, setShow] = useState(false);
+  // google handler function
+  async function handleGithubSignin() {
+    signIn("google", { callbackUrl: "http://localhost:3000" });
+  }
   return (
     <Layout>
       <Head>
@@ -43,7 +48,7 @@ const Login = () => {
               className={styles.input_text}
             />
             <span
-             title={`${show ? 'hidden password' : 'visible password'}`}
+              title={`${show ? "hidden password" : "visible password"}`}
               className="icon flex items-center px-4 cursor-pointer"
               onClick={() => {
                 setShow(!show);
@@ -57,24 +62,37 @@ const Login = () => {
             <button type="submit">Login</button>
           </div>
           <div className="input-button">
-            <button type="button" className={styles.button_custom}>
-              Sign In with Google{" "}
-              <Image src={"/assets/google.svg"} width={20} height={20} />
+            <button
+              type="button"
+              onClick={handleGithubSignin}
+              className={styles.button_custom}
+            >
+              Sign In with Google
+              <Image
+                src={"/assets/google.svg"}
+                width={20}
+                height={20}
+                alt={"google-icon"}
+              />
             </button>
           </div>
           <div className="input-button">
             <button type="button" className={styles.button_custom}>
               Sign In with Github{" "}
-              <Image src={"/assets/github.svg"} width={20} height={20} />
+              <Image
+                src={"/assets/github.svg"}
+                width={20}
+                height={20}
+                alt={"github-icon"}
+              />
             </button>
           </div>
         </form>
         {/*bottom */}
         <p className="text-center text-gray-500">
           dont have an account yet{" "}
-          <Link href={"/register"}>
-            {" "}
-            <a className="text-blue-700"> Sign up</a>{" "}
+          <Link href={"/register"} className="text-blue-700">
+            Sign up
           </Link>
         </p>
       </section>
