@@ -5,6 +5,7 @@ import Layout from "./layout/layout";
 import styles from "@/styles/Form.module.css";
 import { useState } from "react";
 import { useFormik } from "formik";
+import register_validate from "@/lib/registerValidate";
 export default function Register() {
   const [show, setShow] = useState({
     password: false,
@@ -17,6 +18,7 @@ export default function Register() {
       password: "",
       confirmPassword: "",
     },
+    validate: register_validate,
     onSubmit,
   });
   async function onSubmit(values) {
@@ -48,6 +50,9 @@ export default function Register() {
               <HiOutlineUser size={25} />
             </span>
           </div>
+          {formik.errors.userName && formik.touched.userName && (
+            <span  className="text-red-500">{formik.errors.userName}</span>
+          )}
           <div className={styles.input_group}>
             <input
               type="email"
@@ -60,6 +65,9 @@ export default function Register() {
               <HiAtSymbol size={25} />
             </span>
           </div>
+          {formik.errors.email && formik.touched.email && (
+            <span  className="text-red-500">{formik.errors.email}</span>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show.password ? "text" : "password"}`}
@@ -80,6 +88,9 @@ export default function Register() {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.password && formik.touched.password && (
+            <span  className="text-red-500">{formik.errors.password}</span>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show.confirmPassword ? "text" : "password"}`}
@@ -100,6 +111,9 @@ export default function Register() {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.confirmPassword && formik.touched.confirmPassword && (
+            <span  className="text-red-500">{formik.errors.confirmPassword}</span>
+          )}
           {/* login buttons */}
           <div className={styles.button}>
             <button type="submit">Login</button>
