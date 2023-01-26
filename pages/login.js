@@ -9,15 +9,28 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { HiFingerPrint, HiAtSymbol } from "react-icons/hi";
 import { useState } from "react";
+import { useFormik } from "formik";
 const Login = () => {
   const [show, setShow] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit,
+  });
+  async function onSubmit(values) {
+    console.log(values);
+  }
   // google handler function
   async function handleGoogleSignin() {
     signIn("google", { callbackUrl: "http://localhost:3000" });
   }
+  // github handler function
   async function handleGithubSignin() {
     signIn("github", { callbackUrl: "http://localhost:3000" });
   }
+
   return (
     <Layout>
       <Head>
@@ -31,13 +44,14 @@ const Login = () => {
           </p>
         </div>
         {/* form login */}
-        <form className="flex  flex-col gap-5">
+        <form className="flex  flex-col gap-5" onSubmit={formik.handleSubmit}>
           <div className={styles.input_group}>
             <input
               type="email"
               name="email"
               placeholder="Email"
               className={styles.input_text}
+              {...formik.getFieldProps("email")}
             />
             <span className="icon flex items-center px-4">
               <HiAtSymbol size={25} />
@@ -49,6 +63,7 @@ const Login = () => {
               name="password"
               placeholder="Password"
               className={styles.input_text}
+              {...formik.getFieldProps("password")}
             />
             <span
               title={`${show ? "hidden password" : "visible password"}`}
@@ -80,7 +95,11 @@ const Login = () => {
             </button>
           </div>
           <div className="input-button">
-            <button type="button" className={styles.button_custom} onClick={handleGithubSignin}>
+            <button
+              type="button"
+              className={styles.button_custom}
+              onClick={handleGithubSignin}
+            >
               Sign In with Github
               <Image
                 src={"/assets/github.svg"}
