@@ -10,6 +10,7 @@ import { signIn } from "next-auth/react";
 import { HiFingerPrint, HiAtSymbol } from "react-icons/hi";
 import { useState } from "react";
 import { useFormik } from "formik";
+import login_validate from "@/lib/loginValidate";
 const Login = () => {
   const [show, setShow] = useState(false);
   const formik = useFormik({
@@ -17,6 +18,7 @@ const Login = () => {
       email: "",
       password: "",
     },
+    validate: login_validate,
     onSubmit,
   });
   async function onSubmit(values) {
@@ -57,6 +59,9 @@ const Login = () => {
               <HiAtSymbol size={25} />
             </span>
           </div>
+          {formik.errors.email && formik.touched.email && (
+            <span  className="text-red-500">{formik.errors.email}</span>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show ? "text" : "password"}`}
@@ -75,6 +80,9 @@ const Login = () => {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.password && formik.touched.password && (
+            <span className="text-red-500">{formik.errors.password}</span>
+          )}
           {/* login buttons */}
           <div className={styles.button}>
             <button type="submit">Login</button>
@@ -112,7 +120,7 @@ const Login = () => {
         </form>
         {/*bottom */}
         <p className="text-center text-gray-500">
-          dont have an account yet
+          dont have an account yet&nbsp;
           <Link href={"/register"} className="text-blue-700">
             Sign up
           </Link>

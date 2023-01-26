@@ -4,11 +4,24 @@ import { HiAtSymbol, HiFingerPrint, HiOutlineUser } from "react-icons/hi";
 import Layout from "./layout/layout";
 import styles from "@/styles/Form.module.css";
 import { useState } from "react";
+import { useFormik } from "formik";
 export default function Register() {
   const [show, setShow] = useState({
     password: false,
     confirmPassword: false,
   });
+  const formik = useFormik({
+    initialValues: {
+      userName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onSubmit,
+  });
+  async function onSubmit(values) {
+    console.log(values);
+  }
   return (
     <Layout>
       <Head>
@@ -22,13 +35,14 @@ export default function Register() {
           </p>
         </div>
         {/* form login */}
-        <form className="flex  flex-col gap-5">
+        <form className="flex  flex-col gap-5" onSubmit={formik.handleSubmit}>
           <div className={styles.input_group}>
             <input
               type="text"
               name="userName"
               placeholder="Username"
               className={styles.input_text}
+              {...formik.getFieldProps("userName")}
             />
             <span className="icon flex items-center px-4">
               <HiOutlineUser size={25} />
@@ -40,6 +54,7 @@ export default function Register() {
               name="email"
               placeholder="Email"
               className={styles.input_text}
+              {...formik.getFieldProps("email")}
             />
             <span className="icon flex items-center px-4">
               <HiAtSymbol size={25} />
@@ -51,6 +66,7 @@ export default function Register() {
               name="password"
               placeholder="Password"
               className={styles.input_text}
+              {...formik.getFieldProps("password")}
             />
             <span
               title={`${
@@ -70,6 +86,7 @@ export default function Register() {
               name="confirmPassword"
               placeholder="Confirm Password"
               className={styles.input_text}
+              {...formik.getFieldProps("confirmPassword")}
             />
             <span
               title={`${
