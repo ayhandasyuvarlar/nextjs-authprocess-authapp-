@@ -32,25 +32,26 @@ export default function Register() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
-    await fetch("https://nextjs-authprocess-authapp.vercel.app/signup", options).then(
-      (response) => {
-        if (response.ok === true) {
-          setMessage(response.statusText);
-          setLoading(false);
-          setTimeout(() => {
-            router.push("https://nextjs-authprocess-authapp.vercel.app/login");
-          }, 1000);
-        } else {
-          setMessage(
-            response.status === 422
-              ? "User Already Exists...!"
-              : response.statusText
-          );
-          setLoading(false);
-        }
-        console.log(response);
+    await fetch(
+      "https://nextjs-authprocess-authapp.vercel.app/api/auth/signup",
+      options
+    ).then((response) => {
+      if (response.ok === true) {
+        setMessage(response.statusText);
+        setLoading(false);
+        setTimeout(() => {
+          router.push("https://nextjs-authprocess-authapp.vercel.app/login");
+        }, 1000);
+      } else {
+        setMessage(
+          response.status === 422
+            ? "User Already Exists...!"
+            : response.statusText
+        );
+        setLoading(false);
       }
-    );
+      console.log(response);
+    });
   }
   return (
     <Layout>
