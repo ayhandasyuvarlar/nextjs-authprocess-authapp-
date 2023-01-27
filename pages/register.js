@@ -6,6 +6,7 @@ import styles from "@/styles/Form.module.css";
 import { useState } from "react";
 import { useFormik } from "formik";
 import register_validate from "@/lib/registerValidate";
+import { Axios } from "axios";
 export default function Register() {
   const [show, setShow] = useState({
     password: false,
@@ -22,7 +23,23 @@ export default function Register() {
     onSubmit,
   });
   async function onSubmit(values) {
-    console.log(values);
+    try {
+      const resp = await new Axios({
+        method: "POST",
+        url: `http://localhost:3000/api/auth/signup`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          userName: values.userName,
+          email: values.email,
+          password: values.password,
+        },
+      });
+      console.log(resp);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
   return (
     <Layout>
@@ -51,7 +68,7 @@ export default function Register() {
             </span>
           </div>
           {formik.errors.userName && formik.touched.userName && (
-            <span  className="text-red-500">{formik.errors.userName}</span>
+            <span className="text-red-500">{formik.errors.userName}</span>
           )}
           <div className={styles.input_group}>
             <input
@@ -66,7 +83,7 @@ export default function Register() {
             </span>
           </div>
           {formik.errors.email && formik.touched.email && (
-            <span  className="text-red-500">{formik.errors.email}</span>
+            <span className="text-red-500">{formik.errors.email}</span>
           )}
           <div className={styles.input_group}>
             <input
@@ -89,7 +106,7 @@ export default function Register() {
             </span>
           </div>
           {formik.errors.password && formik.touched.password && (
-            <span  className="text-red-500">{formik.errors.password}</span>
+            <span className="text-red-500">{formik.errors.password}</span>
           )}
           <div className={styles.input_group}>
             <input
@@ -112,7 +129,9 @@ export default function Register() {
             </span>
           </div>
           {formik.errors.confirmPassword && formik.touched.confirmPassword && (
-            <span  className="text-red-500">{formik.errors.confirmPassword}</span>
+            <span className="text-red-500">
+              {formik.errors.confirmPassword}
+            </span>
           )}
           {/* login buttons */}
           <div className={styles.button}>
