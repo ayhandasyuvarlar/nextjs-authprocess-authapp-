@@ -11,8 +11,12 @@ import { HiFingerPrint, HiAtSymbol } from "react-icons/hi";
 import { useState } from "react";
 import { useFormik } from "formik";
 import login_validate from "@/lib/loginValidate";
+import { useRouter } from "next/router";
 const Login = () => {
+  const router = useRouter();
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -22,7 +26,27 @@ const Login = () => {
     onSubmit,
   });
   async function onSubmit(values) {
-    console.log(values);
+    setLoading(true);
+    const status = await signIn("credentials", {
+      redirect: false,
+      email: values.email,
+      password: values.password,
+      callbackUrl: "/",
+    });
+    if (status.ok) {
+      setLoading(false);
+      setTimeout(() => {
+        setMessage("success connect");
+      }, 500);
+      setTimeout(() => {
+        router.push(status.url);
+      }, 1000);
+    }
+    if (status) {
+      setMessage(status.error);
+    } else {
+      setMessage(null);
+    }
   }
   // google handler function
   async function handleGoogleSignin() {
@@ -60,7 +84,7 @@ const Login = () => {
             </span>
           </div>
           {formik.errors.email && formik.touched.email && (
-            <span  className="text-red-500">{formik.errors.email}</span>
+            <span className="text-red-500">{formik.errors.email}</span>
           )}
           <div className={styles.input_group}>
             <input
@@ -83,9 +107,20 @@ const Login = () => {
           {formik.errors.password && formik.touched.password && (
             <span className="text-red-500">{formik.errors.password}</span>
           )}
+          {message !== null ? (
+            <span
+              className={`${
+                message === "success connect"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {message}
+            </span>
+          ) : null}
           {/* login buttons */}
           <div className={styles.button}>
-            <button type="submit">Login</button>
+            <button type="submit">{loading ? "Loading...!" : "Login"}</button>
           </div>
           <div className="input-button">
             <button

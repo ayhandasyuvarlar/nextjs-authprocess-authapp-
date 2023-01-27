@@ -59,8 +59,9 @@ function User({ session, signOut }) {
           height={100}
           style={{ objectFit: "cover", borderRadius: "50%" }}
         />
-        <h5>{session.user.name}</h5>
+        <h5>{session.user.name || session.user.userName}</h5>
         <h5>{session.user.email}</h5>
+        {JSON.stringify(session.user)}
       </div>
       <div className="flex justify-center gap-10">
         <div className="flex justify-center">
