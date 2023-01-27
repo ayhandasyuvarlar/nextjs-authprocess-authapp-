@@ -3,10 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import dotenv from "dotenv";
 import connectMongo from "@/database/connetMongo";
 import Users from "@/model/Schema";
-dotenv.config();
 export default NextAuth({
   providers: [
     // Google Provider
