@@ -50,11 +50,11 @@ const Login = () => {
   }
   // google handler function
   async function handleGoogleSignin() {
-    signIn("google", { callbackUrl: "http://localhost:3000" });
+    signIn("google", { callbackUrl: "https://nextjs-authprocess-authapp.vercel.app" });
   }
   // github handler function
   async function handleGithubSignin() {
-    signIn("github", { callbackUrl: "http://localhost:3000" });
+    signIn("github", { callbackUrl: "https://nextjs-authprocess-authapp.vercel.app" });
   }
 
   return (

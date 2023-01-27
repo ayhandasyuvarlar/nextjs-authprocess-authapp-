@@ -32,13 +32,13 @@ export default function Register() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
-    await fetch("http://localhost:3000/api/auth/signup", options).then(
+    await fetch("https://nextjs-authprocess-authapp.vercel.app/signup", options).then(
       (response) => {
         if (response.ok === true) {
           setMessage(response.statusText);
           setLoading(false);
           setTimeout(() => {
-            router.push("http://localhost:3000/login");
+            router.push("https://nextjs-authprocess-authapp.vercel.app/login");
           }, 1000);
         } else {
           setMessage(
