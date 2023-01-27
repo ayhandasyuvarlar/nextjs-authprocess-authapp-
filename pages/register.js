@@ -6,15 +6,18 @@ import styles from "@/styles/Form.module.css";
 import { useState } from "react";
 import { useFormik } from "formik";
 import register_validate from "@/lib/registerValidate";
-import { Axios } from "axios";
+import { useRouter } from "next/router";
 export default function Register() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState(null);
   const [show, setShow] = useState({
     password: false,
     confirmPassword: false,
   });
   const formik = useFormik({
     initialValues: {
-      userName: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -23,23 +26,31 @@ export default function Register() {
     onSubmit,
   });
   async function onSubmit(values) {
-    try {
-      const resp = await new Axios({
-        method: "POST",
-        url: `http://localhost:3000/api/auth/signup`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          userName: values.userName,
-          email: values.email,
-          password: values.password,
-        },
-      });
-      console.log(resp);
-    } catch (error) {
-      console.log(error.message);
-    }
+    setLoading(true);
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    };
+    await fetch("http://localhost:3000/api/auth/signup", options).then(
+      (response) => {
+        if (response.ok === true) {
+          setMessage(response.statusText);
+          setLoading(false);
+          setTimeout(() => {
+            router.push("http://localhost:3000/login");
+          }, 1000);
+        } else {
+          setMessage(
+            response.status === 422
+              ? "User Already Exists...!"
+              : response.statusText
+          );
+          setLoading(false);
+        }
+        console.log(response);
+      }
+    );
   }
   return (
     <Layout>
@@ -58,17 +69,17 @@ export default function Register() {
           <div className={styles.input_group}>
             <input
               type="text"
-              name="userName"
-              placeholder="Username"
+              name="name"
+              placeholder="Name"
               className={styles.input_text}
-              {...formik.getFieldProps("userName")}
+              {...formik.getFieldProps("name")}
             />
             <span className="icon flex items-center px-4">
               <HiOutlineUser size={25} />
             </span>
           </div>
-          {formik.errors.userName && formik.touched.userName && (
-            <span className="text-red-500">{formik.errors.userName}</span>
+          {formik.errors.name && formik.touched.name && (
+            <span className="text-red-500">{formik.errors.name}</span>
           )}
           <div className={styles.input_group}>
             <input
@@ -133,6 +144,7 @@ export default function Register() {
               {formik.errors.confirmPassword}
             </span>
           )}
+          {message && <span>{message}</span>}
           {/* login buttons */}
           <div className={styles.button}>
             <button type="submit">Login</button>

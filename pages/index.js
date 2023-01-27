@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
+
 import { getSession, useSession, signOut } from "next-auth/react";
 
 export default function Home() {
@@ -59,7 +59,7 @@ function User({ session, signOut }) {
           height={100}
           style={{ objectFit: "cover", borderRadius: "50%" }}
         />
-        <h5>{session.user.name || session.user.userName}</h5>
+        <h5>{session.user.name}</h5>
         <h5>{session.user.email}</h5>
         {JSON.stringify(session.user)}
       </div>
