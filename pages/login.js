@@ -3,8 +3,6 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "./layout/layout";
 import styles from "@/styles/Form.module.css";
-import github from "@/public/assets/github.svg";
-import google from "@/public/assets/google.svg";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { HiFingerPrint, HiAtSymbol } from "react-icons/hi";
@@ -43,18 +41,20 @@ const Login = () => {
       }, 1000);
     }
     if (status) {
+      setLoading(false);
       setMessage(status.error);
     } else {
+      setLoading(false);
       setMessage(null);
     }
   }
   // google handler function
-  async function handleGoogleSignin() {
-    signIn("google", { callbackUrl: "https://nextjs-authprocess-authapp.vercel.app" });
+  async function handleGoogleSign() {
+    signIn("google", { callbackUrl: "http://localhost:3000" });
   }
   // github handler function
-  async function handleGithubSignin() {
-    signIn("github", { callbackUrl: "https://nextjs-authprocess-authapp.vercel.app" });
+  async function handleGithubSign() {
+    signIn("github", { callbackUrl: "http://localhost:3000" });
   }
 
   return (
@@ -125,7 +125,7 @@ const Login = () => {
           <div className="input-button">
             <button
               type="button"
-              onClick={handleGoogleSignin}
+              onClick={handleGoogleSign}
               className={styles.button_custom}
             >
               Sign In with Google
@@ -141,7 +141,7 @@ const Login = () => {
             <button
               type="button"
               className={styles.button_custom}
-              onClick={handleGithubSignin}
+              onClick={handleGithubSign}
             >
               Sign In with Github
               <Image

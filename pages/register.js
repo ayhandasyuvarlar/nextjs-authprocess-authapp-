@@ -32,26 +32,25 @@ export default function Register() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
-    await fetch(
-      "https://nextjs-authprocess-authapp.vercel.app/api/auth/signup",
-      options
-    ).then((response) => {
-      if (response.ok === true) {
-        setMessage(response.statusText);
-        setLoading(false);
-        setTimeout(() => {
-          router.push("https://nextjs-authprocess-authapp.vercel.app/login");
-        }, 1000);
-      } else {
-        setMessage(
-          response.status === 422
-            ? "User Already Exists...!"
-            : response.statusText
-        );
-        setLoading(false);
+    await fetch("http://localhost:3000/api/auth/signup", options).then(
+      (response) => {
+        if (response.ok === true) {
+          setMessage(response.statusText);
+          setLoading(false);
+          setTimeout(() => {
+            router.push("http://localhost:3000/login");
+          }, 1000);
+        } else {
+          setMessage(
+            response.status === 422
+              ? "User Already Exists...!"
+              : response.statusText
+          );
+          setLoading(false);
+        }
+        console.log(response);
       }
-      console.log(response);
-    });
+    );
   }
   return (
     <Layout>
@@ -155,7 +154,7 @@ export default function Register() {
         <p className="text-center text-gray-500">
           Do you already have an account
           <Link href={"/login"}>
-            <a className="text-blue-700"> Sign up</a>{" "}
+            <a className="text-blue-700"> Log in</a>{" "}
           </Link>
         </p>
       </section>

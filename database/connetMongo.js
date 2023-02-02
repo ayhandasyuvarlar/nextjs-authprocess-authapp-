@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+
 const connectMongo = async () => {
   try {
-    const { connection } = await mongoose.connect(process.env.MONGO_URI);
+    const { connection } = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+    });
+
     if (connection.readyState == 1) {
       return Promise.resolve(true);
     }
-  } catch (errors) {
-    return Promise.reject(errors.message);
+  } catch (error) {
+    return Promise.reject(error);
   }
 };
 

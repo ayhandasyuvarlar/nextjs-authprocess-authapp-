@@ -5,8 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import connectMongo from "@/database/connetMongo";
 import Users from "@/model/Schema";
-import dotenv from "dotenv";
-dotenv.config();
+
 export default NextAuth({
   providers: [
     // Google Provider
@@ -42,4 +41,8 @@ export default NextAuth({
       },
     }),
   ],
+  secret: "XH6bp/TkLvnUkQiPDEZNyHc0CV+VV5RL/n+HdVHoHN0=",
+  session: {
+    strategy: "jwt",
+  },
 });
